@@ -1,0 +1,31 @@
+S. No,Sector,Organisation Name,Whitelisted Domains
+1,BFSI,State Bank of India (SBI),onlinesbi.sbi
+2,,,sbi.co.in
+3,,,sbicard.com
+4,,,yonobusiness.sbi
+5,,,sbiepay.sbi
+6,,,sbilife.co.in
+7,,ICICI Bank,icicibank.com
+8,,,icicicareers.com
+9,,,icicidirect.com
+10,,,icicilombard.com
+11,,,iciciprulife.com
+12,,HDFC Bank,hdfcbank.com
+13,,,hdfc.com
+14,,,hdfcergo.com
+15,,,hdfclife.com
+16,,Punjab National Bank (PNB),pnbindia.in
+17,,,netpnb.com
+18,,Bank of Baroda (BoB),bankofbaroda.in
+19,,,bobibanking.com
+20,Government,National Informatics Centre (NIC),nic.gov.in
+21,,,email.gov.in
+22,,,kavach.mail.gov.in
+23,,,accounts.mgovcloud.in
+24,,Registrar General and Census Commissioner of India (RGCCI),dc.crsorgi.gov.in
+25,Transport,Indian Railway Catering and Tourism Corporation (IRCTC),irctc.co.in
+26,,,"
+irctc.com"
+27,Telecom,Airtel,airtel.in
+28,,,airtel.com
+29,P&E,Indian Oil Corporation Limited (IOCL),iocl.com

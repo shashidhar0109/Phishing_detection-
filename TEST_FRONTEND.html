@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        iframe { width: 100%; height: 600px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Frontend Error Test</h1>
+    
+    <div class="test-result info">
+        <strong>Testing Frontend at:</strong> http://localhost:3002
+    </div>
+    
+    <div id="test-results"></div>
+    
+    <h2>Frontend Preview:</h2>
+    <iframe src="http://localhost:3002" id="frontend-frame"></iframe>
+    
+    <script>
+        const resultsDiv = document.getElementById('test-results');
+        
+        function addResult(message, type) {
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            resultsDiv.appendChild(div);
+        }
+        
+        // Test API endpoints
+        async function testAPIs() {
+            addResult('🔄 Testing API endpoints...', 'info');
+            
+            try {
+                // Test stats API
+                const statsResponse = await fetch('http://localhost:8001/api/stats');
+                if (statsResponse.ok) {
+                    const stats = await statsResponse.json();
+                    addResult(`✅ Stats API: ${stats.total_cse_domains} CSE domains, ${stats.total_phishing_detected} detections`, 'success');
+                } else {
+                    addResult(`❌ Stats API failed: ${statsResponse.status}`, 'error');
+                }
+                
+                // Test detections API
+                const detectionsResponse = await fetch('http://localhost:8001/api/phishing-detections');
+                if (detectionsResponse.ok) {
+                    const detections = await detectionsResponse.json();
+                    addResult(`✅ Detections API: ${detections.length} detections loaded`, 'success');
+                } else {
+                    addResult(`❌ Detections API failed: ${detectionsResponse.status}`, 'error');
+                }
+                
+                // Test trend API
+                const trendResponse = await fetch('http://localhost:8001/api/phishing-detections/all-for-trend');
+                if (trendResponse.ok) {
+                    const trends = await trendResponse.json();
+                    addResult(`✅ Trend API: ${trends.length} trend data points`, 'success');
+                } else {
+                    addResult(`❌ Trend API failed: ${trendResponse.status}`, 'error');
+                }
+                
+            } catch (error) {
+                addResult(`❌ API Test Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Test frontend loading
+        function testFrontend() {
+            addResult('🔄 Testing frontend loading...', 'info');
+            
+            const iframe = document.getElementById('frontend-frame');
+            
+            iframe.onload = function() {
+                try {
+                    // Check if iframe loaded successfully
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    if (iframeDoc && iframeDoc.body) {
+                        addResult('✅ Frontend loaded successfully', 'success');
+                        
+                        // Check for JavaScript errors in console
+                        const scripts = iframeDoc.querySelectorAll('script');
+                        addResult(`✅ Found ${scripts.length} JavaScript files loaded`, 'success');
+                        
+                        // Check for any error indicators
+                        const errorElements = iframeDoc.querySelectorAll('[class*="error"], [class*="Error"]');
+                        if (errorElements.length === 0) {
+                            addResult('✅ No visible error elements found', 'success');
+                        } else {
+                            addResult(`⚠️ Found ${errorElements.length} potential error elements`, 'error');
+                        }
+                        
+                    } else {
+                        addResult('❌ Frontend iframe content not accessible', 'error');
+                    }
+                } catch (error) {
+                    addResult(`❌ Frontend test error: ${error.message}`, 'error');
+                }
+            };
+            
+            iframe.onerror = function() {
+                addResult('❌ Frontend failed to load', 'error');
+            };
+        }
+        
+        // Run tests
+        testAPIs();
+        testFrontend();
+        
+        // Add final status
+        setTimeout(() => {
+            addResult('🎯 Frontend test completed. Check the iframe above for any visual errors.', 'info');
+        }, 3000);
+    </script>
+</body>
+</html>
